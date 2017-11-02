@@ -12,8 +12,8 @@ def signal_handler(signal, frame):
         sys.exit(0)
 signal.signal(signal.SIGINT, signal_handler)
 
-pc = pclient.ProcessCollector(namespace='docker',
-                              pid=lambda: open('/var/run/docker.pid').read())
+pc = pclient.ProcessCollector(namespace='minion',
+                              pid=lambda: open('/var/run/salt-minion.pid').read())
 
 
 def load_memory(s):
