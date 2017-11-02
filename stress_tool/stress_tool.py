@@ -1,18 +1,23 @@
 import argparse
 import random
-import string
 import time
 
-from prometheus_client import start_http_server, Summary
+import prometheus_client as pclient
 
-# Create a metric to track time spent and requests made.
-REQUEST_TIME = Summary('request_time_stress', 'Time of request stress')
+pc = pclient.ProcessCollector(namespace='docker',
+                              pid=lambda: open('/var/run/docker.pid').read())
 
 
-@REQUEST_TIME.time()
 def load_memory(a, s):
+    pc.collect()
+    flag = True
     for ss in s:
-        ss.observe(random.randint(10**6, 10**7))
+        if flag:
+            ss.set(random.randint(10**6, 10**7))
+            flag = not flag
+        else:
+            ss.observe(random.randint(10**6, 10**7))
+            flag = not flag
     return a
 
 
@@ -27,11 +32,13 @@ def parse_args():
 if __name__ == '__main__':
     parser = parse_args().parse_args()
     # Start up the server to expose the metrics.
-    start_http_server(int(parser.listen_address))
+    pclient.start_http_server(int(parser.listen_address))
     # Generate some requests.
     s = []
     for i in range(int(parser.metric_count)):
-        s.append(Summary('random_metric_%s' % i, 'Random value metric'))
+        s.append(pclient.Gauge('random_metric_%s' % i, 'Random value metric'))
+        s.append(pclient.Histogram('random_metric_histogram_%s' % i,
+                                   'Random metric histogram'))
     while True:
         a = []
         a = load_memory(a, s)
