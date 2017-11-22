@@ -6,18 +6,15 @@ import time
 
 import prometheus_client as pclient
 
+
 # strange thing
 def signal_handler(signal, frame):
         print('Target stopped.')
         sys.exit(0)
 signal.signal(signal.SIGINT, signal_handler)
 
-pc = pclient.ProcessCollector(namespace='minion',
-                              pid=lambda: open('/var/run/salt-minion.pid').read())
-
 
 def load_memory(s):
-    pc.collect()
     flag = True
     for ss in s:
         if flag:

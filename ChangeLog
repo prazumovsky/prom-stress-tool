@@ -1,6 +1,10 @@
 CHANGES
 =======
 
+* Change docker.pid to salt-minion.pid
+* Update reqs
+* Update reqs.txt
+* Add setup.py and few more funny things
 * Try to load memory harder
 * Stress tool prom
 * Add README.md
