@@ -5,6 +5,10 @@ PORTS=$2
 COUNT=$3
 SPEED=$4
 
+# install python
+apt-get update
+apt-get install -y python
+
 # update pip
 wget https://bootstrap.pypa.io/get-pip.py
 python get-pip.py
