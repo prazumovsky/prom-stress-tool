@@ -1,5 +1,8 @@
 #!/bin/bash -ex
 
+
+# only for ubuntu machines
+
 TARGETS=$1
 PORTS=$2
 COUNT=$3
@@ -7,7 +10,7 @@ SPEED=$4
 
 # install python
 apt-get update
-apt-get install -y python
+apt-get install -y python git
 
 # update pip
 wget https://bootstrap.pypa.io/get-pip.py
