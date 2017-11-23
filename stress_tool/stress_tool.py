@@ -71,7 +71,7 @@ def read_mode(parser):
                          params={'query': query_string})
         match = re.search('\"status\":\s*\"success\"', r.text)
         if not match:
-            print('Unsuccessful response: %s' % r.text)
+            raise ValueError('Unsuccessful response: %s' % r.text)
         time.sleep(float(parser.read_period) * 0.001)
 
 
