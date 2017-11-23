@@ -1,6 +1,10 @@
 CHANGES
 =======
 
+* Add ability to read metrics from prom by query
+* Update common-script again
+* Fix common-script
+* Add docker support
 * Change docker.pid to salt-minion.pid
 * Update reqs
 * Update reqs.txt

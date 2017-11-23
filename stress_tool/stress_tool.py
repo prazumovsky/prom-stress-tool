@@ -17,12 +17,7 @@ def signal_handler(signal, frame):
 signal.signal(signal.SIGINT, signal_handler)
 
 
-pc = pclient.ProcessCollector(namespace='docker',
-                              pid=lambda: open('/var/run/docker.pid').read())
-
-
 def load_memory(s):
-    pc.collect()
     flag = True
     for ss in s:
         if flag:
@@ -56,12 +51,12 @@ def parse_args():
 def read_mode(parser):
     prom_url = parser.prometheus_url
     job = parser.job_name
-    if job is None:
+    if not job:
         job = ''
     elif not job.startswith('~'):
         job = '"%s"' % job
     instance = parser.instance_name
-    if instance is None:
+    if not instance:
         instance = ''
     elif not instance.startswith('~'):
         instance = '"%s"' % instance

@@ -3,10 +3,15 @@
 
 # only for ubuntu machines
 
-TARGETS=$1
-PORTS=$2
-COUNT=$3
-SPEED=$4
+TARGETS=${TARGETS:-1}
+PORTS=${PORTS:-29090}
+COUNT=${COUNT:-3}
+SPEED=${SPEED:-15000}
+READ=${READ:-false}
+PROMETHEUS=${PROMETHEUS:-}
+READ_PERIOD=${READ_PERIOD:-15000}
+JOB_NAME=${JOB_NAME:-stress}
+INSTANCE=${INSTANCE:-}
 
 # install python
 apt-get update
@@ -37,5 +42,17 @@ IFS=',' read -a arrports <<<"$PORTS"
 docker build . -t stress
 for i in `seq 0 $((TARGETS - 1))`;
 do
-    docker run -p ${arrports[i]}:${arrports[i]} --name target-$i -e PORT=${arrports[i]} -e COUNT=$COUNT -e SPEED=$SPEED -d stress
+    docker run -p ${arrports[i]}:${arrports[i]} \
+               --name target-$i \
+               -e PORT=${arrports[i]} \
+               -e COUNT=$COUNT \
+               -e SPEED=$SPEED \
+               -d stress
+    if [ $READ = true ]; then
+        docker run --name reader-$i -e READ=$READ \
+                                    -e PROMETHEUS=$PROMETHEUS \
+                                    -e JOB_NAME=$JOB_NAME \
+                                    -e INSTANCE=$INSTANCE \
+                                    -e READ_PERIOD=$READ_PERIOD -d stress;
+    fi
 done
