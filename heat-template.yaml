@@ -55,12 +55,12 @@ resources:
             export PROMETHEUS=%PROM%
             export READ_PERIOD=%PERIOD%
             export JOB_NAME=%JOB_NAME%
-            sudo /opt/script.sh
+            sudo bash /opt/script.sh
           params:
-            %PORT%: { get_param: port }
-            %COUNT%: { get_param: metric_count }
-            %SPEED%: { get_param: speed }
-            %READ%: { get_param: read }
-            %PROMETHEUS%: { get_param: prometheus_url }
-            %READ_PERIOD%: { get_param: read_period }
-            %JOB_NAME%: { get_param: job_name }
+            "%PORTS%": { get_param: ports }
+            "%COUNT%": { get_param: metric_count }
+            "%SPEED%": { get_param: speed }
+            "%READ%": { get_param: read }
+            "%PROMETHEUS%": { get_param: prometheus_url }
+            "%READ_PERIOD%": { get_param: read_period }
+            "%JOB_NAME%": { get_param: job_name }
